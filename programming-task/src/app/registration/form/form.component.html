@@ -1,0 +1,40 @@
+<form [formGroup]="form" (submit)="onSubmit()">
+  <div *ngFor="let element of formConfig">
+    <div>
+      <label [for]="element.label">{{ element.label }}</label
+      ><span *ngIf="element.required">*</span>
+      <div *ngIf="element.type === 'password'; else notPassword">
+        <input
+          [type]="isHidePassword ? 'password' : 'text'"
+          [id]="element.name"
+          [formControlName]="element.name"
+        />
+        <button type="button" (click)="toggleShowPassword()">Show/Hide</button>
+        <div
+          class="alert alert-danger"
+          *ngIf="form.controls[element.name].errors"
+        >
+          <p>{{ form.controls[element.name].errors?.error }}</p>
+        </div>
+      </div>
+      <ng-template #notPassword>
+        <div>
+          <input
+            [type]="element.type"
+            [id]="element.name"
+            [formControlName]="element.name"
+          />
+        </div>
+        <div
+          class="alert alert-danger"
+          *ngIf="form.controls[element.name].errors"
+        >
+          <p>{{ form.controls[element.name].errors?.error }}</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+  <button type="submit" [disabled]="form.invalid" [routerLink]="['/welcome']">
+    Submit
+  </button>
+</form>
